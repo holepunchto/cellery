@@ -1,1 +1,1 @@
-declare module '@holepunchto/repo-template'
+declare module '@holepunchto/grow-ui'

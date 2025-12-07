@@ -1,13 +1,19 @@
 {
-  "name": "@holepunchto/repo-template",
+  "name": "@holepunchto/grow-ui",
   "version": "0.0.1",
-  "description": "repo-template",
+  "description": "grow-ui",
   "main": "index.js",
   "exports": {
     "./package": "./package.json",
     ".": {
       "types": "./index.d.ts",
       "default": "./index.js"
+    }
+  },
+  "imports": {
+    "process": {
+      "bare": "bare-process",
+      "default": "process"
     }
   },
   "files": [
@@ -28,12 +34,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/holepunchto/repo-template.git"
+    "url": "https://github.com/holepunchto/grow-ui.git"
   },
   "author": "Holepunch Inc",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/holepunchto/repo-template/issues"
+    "url": "https://github.com/holepunchto/grow-ui/issues"
   },
-  "homepage": "https://github.com/holepunchto/repo-template"
+  "homepage": "https://github.com/holepunchto/grow-ui",
+  "dependencies": {
+    "bare-process": "^4.2.2"
+  }
 }

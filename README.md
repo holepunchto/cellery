@@ -1,6 +1,8 @@
-# repo-template
+# grow-ui
 
-Template repository for creating packages
+WIP
+
+Components, renders and base will be split into modules
 
 ## Usage
 
