@@ -1,3 +1,5 @@
+const process = require('process')
+
 const { EdgeInsets, Color, Grow, BoxDecoration, Border } = require('./lib/base')
 const { Container, Text, Center } = require('./lib/components')
 const { GrowRendererHTML } = require('./lib/html-renderer')
@@ -6,7 +8,7 @@ const { GrowRendererTUI } = require('./lib/tui-renderer')
 const ui = new Container({
   width: 1000,
   height: 100,
-  margin: EdgeInsets.all(10),
+  margin: EdgeInsets.all(2),
   decoration: new BoxDecoration({
     border: Border.all()
   }),
@@ -37,14 +39,21 @@ const ui = new Container({
   ]
 })
 
-// ui.setAttribute('width', 250)
-// console.log(ui.toString())
-
 {
   const grow = new Grow({
     renderer: new GrowRendererTUI(),
     child: ui
   })
+
+  ui.setAttribute('width', process.stdout.columns)
+  ui.setAttribute('height', process.stdout.rows)
+
+  // TODO: raw mode?
+  // process.stdout.on('resize', () => {
+  //   ui.setAttribute('width', process.stdout.columns)
+  //   ui.setAttribute('height', process.stdout.rows)
+  //   grow.render()
+  // })
 
   grow.render()
 }
