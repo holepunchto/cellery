@@ -36,19 +36,22 @@ const ui = new Container({
 })
 
 // ui.setAttribute('width', 250)
-
-const grow = new Grow({
-  renderer: new GrowRendererTUI(),
-  child: ui
-})
-
 // console.log(ui.toString())
 
-grow.render()
+{
+  const grow = new Grow({
+    renderer: new GrowRendererTUI(),
+    child: ui
+  })
 
-const html = new Grow({
-  renderer: new GrowRendererHTML(),
-  child: ui
-})
+  grow.render()
+}
 
-console.log(html.render())
+{
+  const grow = new Grow({
+    renderer: new GrowRendererHTML(),
+    child: ui
+  })
+
+  console.log(grow.render())
+}
