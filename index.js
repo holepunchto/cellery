@@ -23,8 +23,8 @@ const ui = new Container({
     }),
     new Center({
       child: new Container({
-        width: 500,
-        height: 30,
+        width: process.stdout.columns / 2,
+        height: 3,
         decoration: new BoxDecoration({
           border: Border.all({ color: Color.from({ red: 255 }) })
         }),
@@ -63,6 +63,9 @@ const ui = new Container({
     renderer: new GrowRendererHTML(),
     child: ui
   })
+
+  ui.setAttribute('width', 720)
+  ui.setAttribute('height', 480)
 
   console.log(grow.render())
 }
