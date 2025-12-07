@@ -1,5 +1,5 @@
 const { EdgeInsets, Color, Grow, BoxDecoration, Border } = require('./lib/base')
-const { Container, Text } = require('./lib/components')
+const { Container, Text, Center } = require('./lib/components')
 const { GrowRendererHTML } = require('./lib/html-renderer')
 const { GrowRendererTUI } = require('./lib/tui-renderer')
 
@@ -19,18 +19,20 @@ const ui = new Container({
       value: 'Hello again!',
       color: Color.from({ blue: 255 })
     }),
-    new Container({
-      width: 500,
-      height: 30,
-      decoration: new BoxDecoration({
-        border: Border.all({ color: Color.from({ red: 255 }) })
-      }),
-      children: [
-        new Text({
-          value: 'Inner',
-          color: Color.from({ green: 255 })
-        })
-      ]
+    new Center({
+      child: new Container({
+        width: 500,
+        height: 30,
+        decoration: new BoxDecoration({
+          border: Border.all({ color: Color.from({ red: 255 }) })
+        }),
+        children: [
+          new Text({
+            value: 'Inner',
+            color: Color.from({ green: 255 })
+          })
+        ]
+      })
     })
   ]
 })
