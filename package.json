@@ -44,6 +44,7 @@
   "homepage": "https://github.com/holepunchto/grow-ui",
   "dependencies": {
     "bare-ansi-escapes": "^2.2.3",
-    "bare-process": "^4.2.2"
+    "bare-process": "^4.2.2",
+    "graceful-goodbye": "^1.3.3"
   }
 }
