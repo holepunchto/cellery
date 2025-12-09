@@ -1,5 +1,3 @@
-const process = require('process')
-
 const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment } = require('./lib/base')
 const { Container, Text, Center, TextAlign } = require('./lib/components')
 const { GrowRendererHTML } = require('./lib/html-renderer')
@@ -10,6 +8,7 @@ const ui = new Container({
   height: '100%',
   margin: EdgeInsets.all(2),
   color: Color.from('#000'),
+  alignment: Alignment.Center,
   decoration: new BoxDecoration({
     border: Border.all()
   }),
@@ -43,7 +42,6 @@ const ui = new Container({
     new Container({
       width: '50%',
       height: 3,
-      alignment: Alignment.Center,
       decoration: new BoxDecoration({
         border: Border.all({ color: Color.from('#bade5b') })
       }),
