@@ -1,6 +1,6 @@
 const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment } = require('./lib/base')
 const { Container, Text, Center, TextAlign } = require('./lib/components')
-const { GrowRendererHTML } = require('./lib/html-renderer')
+// const { GrowRendererHTML } = require('./lib/html-renderer')
 const { GrowRendererTUI } = require('./lib/tui-renderer')
 
 const ui = new Container({
@@ -61,7 +61,7 @@ const ui = new Container({
     child: ui
   })
 
-  // TODO: raw mode?
+  // TODO: auto resize?
   // process.stdout.on('resize', () => {
   //   ui.setAttribute('width', process.stdout.columns)
   //   ui.setAttribute('height', process.stdout.rows)
