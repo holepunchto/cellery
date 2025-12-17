@@ -1,10 +1,52 @@
 const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment, HotKey } = require('./lib/base')
 const { Container, Text, Center, TextAlign, Pressable } = require('./lib/components')
+const keys = require('./lib/keys')
 // const { GrowRendererHTML } = require('./lib/html-renderer')
 const { GrowRendererTUI } = require('./lib/tui-renderer')
 
+const repos = ['my-first-repo', 'grit', 'git-remote-pear-transport']
+
+function List(props = {}) {
+  const { children, selected } = props
+
+  return new Container({
+    width: '100%',
+    height: '60%',
+    alignment: Alignment.Center,
+    children: [
+      new Pressable({
+        hotkey: new HotKey({ key: keys.ARROW_DOWN }),
+        onPress: function () {
+          const newSelected = selected === repos.length - 1 ? 0 : selected + 1
+
+          grow.update(App({ selected: newSelected }))
+        }
+      }),
+      new Pressable({
+        hotkey: new HotKey({ key: keys.ARROW_UP }),
+        onPress: function () {
+          const newSelected = selected === 0 ? repos.length - 1 : selected - 1
+
+          grow.update(App({ selected: newSelected }))
+        }
+      }),
+      ...children.map(
+        (child, i) =>
+          new Pressable({
+            hotkey: i === 0 ? new HotKey({ key: keys.ENTER }) : null,
+            onPress: () => {
+              // grow.update(App({ openRepo: repos[i] }))
+              console.log(repos[selected ?? i])
+            },
+            child
+          })
+      )
+    ]
+  })
+}
+
 function App(props = {}) {
-  let selected = props.selected || null
+  const { selected = -1 } = props
 
   return new Container({
     width: '100%',
@@ -15,30 +57,24 @@ function App(props = {}) {
       border: Border.all()
     }),
     children: [
-      new Pressable({
-        onPress: function () {
-          grow.update(App({ selected: '1' }))
-        },
-        hotkey: new HotKey({ key: '1' }),
-        child: new Container({
-          width: '100%',
-          height: 3,
-          decoration: new BoxDecoration({
-            border: Border.all({
-              color: selected === '1' ? Color.from('#f00') : Color.from('#bade5b')
+      new Container({
+        width: '100%',
+        height: 3,
+        decoration: new BoxDecoration({
+          border: Border.all({
+            color: Color.from('#bade5b')
+          })
+        }),
+        children: [
+          new Center({
+            width: '100%',
+            height: 3,
+            child: new Text({
+              value: 'Pear Git',
+              color: Color.from('#fff')
             })
-          }),
-          children: [
-            new Center({
-              width: '100%',
-              height: 3,
-              child: new Text({
-                value: 'My First Repo',
-                color: Color.from('#fff')
-              })
-            })
-          ]
-        })
+          })
+        ]
       }),
       new Text({
         value: 'Hello world!',
@@ -49,26 +85,26 @@ function App(props = {}) {
         textAlign: TextAlign.Right,
         color: Color.from({ blue: 255 })
       }),
-      new Pressable({
-        onPress: function () {
-          grow.update(App({ selected: '2' }))
-        },
-        hotkey: new HotKey({ key: '2' }),
-        child: new Container({
-          width: '50%',
-          height: 3,
-          decoration: new BoxDecoration({
-            border: Border.all({
-              color: selected === '2' ? Color.from('#f00') : Color.from('#bade5b')
+      List({
+        selected,
+        children: repos.map(
+          (name, i) =>
+            new Container({
+              width: '50%',
+              height: 3,
+              decoration: new BoxDecoration({
+                border: Border.all({
+                  color: selected === i ? Color.from('#fa0') : Color.from('#bade5b')
+                })
+              }),
+              children: [
+                new Text({
+                  value: name,
+                  color: Color.from('#fff')
+                })
+              ]
             })
-          }),
-          children: [
-            new Text({
-              value: 'Inner',
-              color: Color.from('#fff')
-            })
-          ]
-        })
+        )
       })
     ]
   })
@@ -78,13 +114,6 @@ const grow = new Grow({
   renderer: new GrowRendererTUI(),
   child: App()
 })
-
-// TODO: auto resize?
-// process.stdout.on('resize', () => {
-//   ui.setAttribute('width', process.stdout.columns)
-//   ui.setAttribute('height', process.stdout.rows)
-//   grow.render()
-// })
 
 grow.render()
 
