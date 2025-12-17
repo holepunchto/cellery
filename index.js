@@ -1,5 +1,5 @@
-const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment } = require('./lib/base')
-const { Container, Text, Center, TextAlign } = require('./lib/components')
+const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment, HotKey } = require('./lib/base')
+const { Container, Text, Center, TextAlign, Pressable } = require('./lib/components')
 // const { GrowRendererHTML } = require('./lib/html-renderer')
 const { GrowRendererTUI } = require('./lib/tui-renderer')
 
@@ -7,28 +7,31 @@ const ui = new Container({
   width: '100%',
   height: '100%',
   margin: EdgeInsets.all(2),
-  color: Color.from('#000'),
   alignment: Alignment.Center,
   decoration: new BoxDecoration({
     border: Border.all()
   }),
   children: [
-    new Container({
-      width: '100%',
-      height: 3,
-      decoration: new BoxDecoration({
-        border: Border.all({ color: Color.from('#bade5b') })
-      }),
-      children: [
-        new Center({
-          width: '100%',
-          height: 3,
-          child: new Text({
-            value: 'My First Repo',
-            color: Color.from('#fff')
+    new Pressable({
+      onPress: () => {},
+      hotkey: new HotKey({ key: '1' }),
+      child: new Container({
+        width: '100%',
+        height: 3,
+        decoration: new BoxDecoration({
+          border: Border.all({ color: Color.from('#bade5b') })
+        }),
+        children: [
+          new Center({
+            width: '100%',
+            height: 3,
+            child: new Text({
+              value: 'My First Repo',
+              color: Color.from('#fff')
+            })
           })
-        })
-      ]
+        ]
+      })
     }),
     new Text({
       value: 'Hello world!',
@@ -48,7 +51,7 @@ const ui = new Container({
       children: [
         new Text({
           value: 'Inner',
-          color: Color.from({ green: 255 })
+          color: Color.from('#fff')
         })
       ]
     })
