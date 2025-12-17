@@ -14,6 +14,7 @@ function List(props = {}) {
     height: '60%',
     alignment: Alignment.Center,
     children: [
+      // should be TUI only
       new Pressable({
         hotkey: new HotKey({ key: keys.ARROW_DOWN }),
         onPress: function () {
@@ -22,6 +23,7 @@ function List(props = {}) {
           grow.update(App({ selected: newSelected }))
         }
       }),
+      // should be TUI only
       new Pressable({
         hotkey: new HotKey({ key: keys.ARROW_UP }),
         onPress: function () {
@@ -33,9 +35,12 @@ function List(props = {}) {
       ...children.map(
         (child, i) =>
           new Pressable({
+            // should be TUI only
             hotkey: i === 0 ? new HotKey({ key: keys.ENTER }) : null,
             onPress: () => {
               // grow.update(App({ openRepo: repos[i] }))
+
+              // On TUI we use selected, on GUI we'd use i...
               console.log(repos[selected ?? i])
             },
             child
