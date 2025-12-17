@@ -17,7 +17,7 @@ function App(props = {}) {
     children: [
       new Pressable({
         onPress: function () {
-          this.renderer.render(App({ selected: '1' }))
+          grow.update(App({ selected: '1' }))
         },
         hotkey: new HotKey({ key: '1' }),
         child: new Container({
@@ -49,38 +49,44 @@ function App(props = {}) {
         textAlign: TextAlign.Right,
         color: Color.from({ blue: 255 })
       }),
-      new Container({
-        width: '50%',
-        height: 3,
-        decoration: new BoxDecoration({
-          border: Border.all({ color: Color.from('#bade5b') })
-        }),
-        children: [
-          new Text({
-            value: 'Inner',
-            color: Color.from('#fff')
-          })
-        ]
+      new Pressable({
+        onPress: function () {
+          grow.update(App({ selected: '2' }))
+        },
+        hotkey: new HotKey({ key: '2' }),
+        child: new Container({
+          width: '50%',
+          height: 3,
+          decoration: new BoxDecoration({
+            border: Border.all({
+              color: selected === '2' ? Color.from('#f00') : Color.from('#bade5b')
+            })
+          }),
+          children: [
+            new Text({
+              value: 'Inner',
+              color: Color.from('#fff')
+            })
+          ]
+        })
       })
     ]
   })
 }
 
-{
-  const grow = new Grow({
-    renderer: new GrowRendererTUI(),
-    child: App()
-  })
+const grow = new Grow({
+  renderer: new GrowRendererTUI(),
+  child: App()
+})
 
-  // TODO: auto resize?
-  // process.stdout.on('resize', () => {
-  //   ui.setAttribute('width', process.stdout.columns)
-  //   ui.setAttribute('height', process.stdout.rows)
-  //   grow.render()
-  // })
+// TODO: auto resize?
+// process.stdout.on('resize', () => {
+//   ui.setAttribute('width', process.stdout.columns)
+//   ui.setAttribute('height', process.stdout.rows)
+//   grow.render()
+// })
 
-  grow.render()
-}
+grow.render()
 
 // {
 //   const grow = new Grow({
