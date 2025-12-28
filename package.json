@@ -1,7 +1,7 @@
 {
-  "name": "@holepunchto/grow-ui",
+  "name": "@holepunchto/lyse",
   "version": "0.0.1",
-  "description": "grow-ui",
+  "description": "lyse",
   "main": "index.js",
   "exports": {
     "./package": "./package.json",
@@ -34,14 +34,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/holepunchto/grow-ui.git"
+    "url": "https://github.com/holepunchto/lyse.git"
   },
   "author": "Holepunch Inc",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/holepunchto/grow-ui/issues"
+    "url": "https://github.com/holepunchto/lyse/issues"
   },
-  "homepage": "https://github.com/holepunchto/grow-ui",
+  "homepage": "https://github.com/holepunchto/lyse",
   "dependencies": {
     "bare-ansi-escapes": "^2.2.3",
     "bare-process": "^4.2.2",

@@ -6,7 +6,7 @@ const { GrowRendererTUI } = require('./lib/tui-renderer')
 
 const repos = [
   'my-first-repo',
-  'grit',
+  'lyse',
   'git-remote-pear-transport',
   'pear-desktop',
   'pear-runtime',
@@ -30,9 +30,7 @@ const repos = [
 let scrollableRef = null
 
 function List(props = {}) {
-  const { children, selected, scrollOffset = 0 } = props
-
-  const TRIGGER_DISTANCE = 1 // Start scrolling when 1 item from edge
+  const { children, selected, scrollOffset = 0, triggerDistance = 0 } = props
 
   // Calculate new scroll offset based on viewport info from last render
   let newScrollOffset = scrollOffset
@@ -44,16 +42,16 @@ function List(props = {}) {
       const positionInViewport = selected - scrollOffset
 
       // Scroll down if we're too close to bottom
-      if (positionInViewport >= viewportItemCount - TRIGGER_DISTANCE) {
+      if (positionInViewport >= viewportItemCount - triggerDistance) {
         newScrollOffset = Math.min(
           repos.length - viewportItemCount,
-          selected - viewportItemCount + TRIGGER_DISTANCE + 1
+          selected - viewportItemCount + triggerDistance + 1
         )
       }
 
       // Scroll up if we're too close to top
-      if (positionInViewport < TRIGGER_DISTANCE) {
-        newScrollOffset = Math.max(0, selected - TRIGGER_DISTANCE)
+      if (positionInViewport < triggerDistance) {
+        newScrollOffset = Math.max(0, selected - triggerDistance)
       }
 
       // Clamp to valid range
@@ -117,7 +115,7 @@ function List(props = {}) {
 
   return new Container({
     width: '100%',
-    height: '60%',
+    height: '70%',
     alignment: Alignment.Center,
     children: [upControl, downControl, scrollable, footer]
   })

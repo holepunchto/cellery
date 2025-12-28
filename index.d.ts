@@ -1,1 +1,1 @@
-declare module '@holepunchto/grow-ui'
+declare module '@holepunchto/lyse'
