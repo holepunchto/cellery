@@ -1,57 +1,123 @@
 const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment, HotKey } = require('./lib/base')
-const { Container, Text, Center, TextAlign, Pressable } = require('./lib/components')
+const { Container, Text, Center, TextAlign, Pressable, Scrollable } = require('./lib/components')
 const keys = require('./lib/keys')
 // const { GrowRendererHTML } = require('./lib/html-renderer')
 const { GrowRendererTUI } = require('./lib/tui-renderer')
 
-const repos = ['my-first-repo', 'grit', 'git-remote-pear-transport']
+const repos = [
+  'my-first-repo',
+  'grit',
+  'git-remote-pear-transport',
+  'pear-desktop',
+  'pear-runtime',
+  'bare-kit',
+  'bare-dev',
+  'hypercore',
+  'hyperswarm',
+  'hyperdht',
+  'hypercore-crypto',
+  'compact-encoding',
+  'protomux',
+  'b4a',
+  'random-access-storage',
+  'random-access-file',
+  'brittle',
+  'quickbit',
+  'safety-catch'
+]
+
+// Track the scrollable component ref so we can get viewport info
+let scrollableRef = null
 
 function List(props = {}) {
-  const { children, selected } = props
+  const { children, selected, scrollOffset = 0 } = props
+
+  const TRIGGER_DISTANCE = 1 // Start scrolling when 1 item from edge
+
+  // Calculate new scroll offset based on viewport info from last render
+  let newScrollOffset = scrollOffset
+
+  if (selected >= 0 && scrollableRef?._renderedViewport) {
+    const { itemCount: viewportItemCount } = scrollableRef._renderedViewport
+
+    if (viewportItemCount > 0) {
+      const positionInViewport = selected - scrollOffset
+
+      // Scroll down if we're too close to bottom
+      if (positionInViewport >= viewportItemCount - TRIGGER_DISTANCE) {
+        newScrollOffset = Math.min(
+          repos.length - viewportItemCount,
+          selected - viewportItemCount + TRIGGER_DISTANCE + 1
+        )
+      }
+
+      // Scroll up if we're too close to top
+      if (positionInViewport < TRIGGER_DISTANCE) {
+        newScrollOffset = Math.max(0, selected - TRIGGER_DISTANCE)
+      }
+
+      // Clamp to valid range
+      newScrollOffset = Math.max(
+        0,
+        Math.min(Math.max(0, repos.length - viewportItemCount), newScrollOffset)
+      )
+    }
+  }
+
+  // Navigation controls (invisible, just for hotkeys)
+  const upControl = new Pressable({
+    hotkey: new HotKey({ key: keys.ARROW_UP }),
+    onPress: function () {
+      const newSelected = selected === 0 ? repos.length - 1 : selected - 1
+      grow.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
+    }
+  })
+
+  const downControl = new Pressable({
+    hotkey: new HotKey({ key: keys.ARROW_DOWN }),
+    onPress: function () {
+      const newSelected = selected === repos.length - 1 ? 0 : selected + 1
+      grow.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
+    }
+  })
+
+  // Create the scrollable component
+  // Use calc: parent height minus 1 row for footer
+  const scrollable = new Scrollable({
+    width: '100%',
+    height: 'calc(100% - 1)', // Reserve 1 row for footer
+    scrollOffset: newScrollOffset,
+    children: children.map(
+      (child, i) =>
+        new Pressable({
+          hotkey: i === selected ? new HotKey({ key: keys.ENTER }) : null,
+          onPress: () => {
+            console.log('Selected:', repos[i])
+          },
+          child
+        })
+    )
+  })
+
+  // Store ref for next render
+  scrollableRef = scrollable
+
+  // Footer
+  const footer = new Text({
+    value: `${selected + 1}/${repos.length} | scroll: ${newScrollOffset}`,
+    color: Color.from({ red: 100, green: 100, blue: 100 })
+  })
 
   return new Container({
     width: '100%',
     height: '60%',
     alignment: Alignment.Center,
-    children: [
-      // should be TUI only
-      new Pressable({
-        hotkey: new HotKey({ key: keys.ARROW_DOWN }),
-        onPress: function () {
-          const newSelected = selected === repos.length - 1 ? 0 : selected + 1
-
-          grow.update(App({ selected: newSelected }))
-        }
-      }),
-      // should be TUI only
-      new Pressable({
-        hotkey: new HotKey({ key: keys.ARROW_UP }),
-        onPress: function () {
-          const newSelected = selected === 0 ? repos.length - 1 : selected - 1
-
-          grow.update(App({ selected: newSelected }))
-        }
-      }),
-      ...children.map(
-        (child, i) =>
-          new Pressable({
-            // should be TUI only
-            hotkey: i === 0 ? new HotKey({ key: keys.ENTER }) : null,
-            onPress: () => {
-              // grow.update(App({ openRepo: repos[i] }))
-
-              // On TUI we use selected, on GUI we'd use i...
-              console.log(repos[selected ?? i])
-            },
-            child
-          })
-      )
-    ]
+    children: [upControl, downControl, scrollable, footer]
   })
 }
 
 function App(props = {}) {
-  const { selected = -1 } = props
+  const { selected = -1, scrollOffset = 0 } = props
 
   return new Container({
     width: '100%',
@@ -82,16 +148,12 @@ function App(props = {}) {
         ]
       }),
       new Text({
-        value: 'Hello world!',
-        color: Color.from({ red: 255 })
-      }),
-      new Text({
-        value: 'Hello again!',
-        textAlign: TextAlign.Right,
-        color: Color.from({ blue: 255 })
+        value: 'Use ↑/↓ to navigate the scrollable list',
+        color: Color.from({ red: 200, green: 200, blue: 200 })
       }),
       List({
         selected,
+        scrollOffset,
         children: repos.map(
           (name, i) =>
             new Container({
