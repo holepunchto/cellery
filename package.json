@@ -2,12 +2,13 @@
   "name": "lyse",
   "version": "0.0.1",
   "description": "lyse",
-  "main": "index.js",
   "exports": {
     "./package": "./package.json",
+    "./renderers": "./lib/renderers/index.js",
+    "./components": "./lib/components/index.js",
     ".": {
       "types": "./index.d.ts",
-      "default": "./index.js"
+      "default": "./lib/index.js"
     }
   },
   "imports": {

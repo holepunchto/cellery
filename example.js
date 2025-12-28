@@ -1,8 +1,7 @@
-const { EdgeInsets, Color, Grow, BoxDecoration, Border, Alignment, HotKey } = require('./lib/base')
-const { Container, Text, Center, TextAlign, Pressable, Scrollable } = require('./lib/components')
-const keys = require('./lib/keys')
-// const { GrowRendererHTML } = require('./lib/html-renderer')
-const { GrowRendererTUI } = require('./lib/tui-renderer')
+const { EdgeInsets, Color, Lyse, BoxDecoration, Border, Alignment, HotKey, keys } = require('.')
+const { Container, Text, Center, Pressable, Scrollable } = require('lyse/components')
+// const { LyseRendererHTML } = require('./lib/html-renderer')
+const { LyseRendererTUI } = require('lyse/renderers')
 
 const repos = [
   'my-first-repo',
@@ -67,7 +66,7 @@ function List(props = {}) {
     hotkey: new HotKey({ key: keys.ARROW_UP }),
     onPress: function () {
       const newSelected = selected === 0 ? repos.length - 1 : selected - 1
-      grow.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
+      lyse.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
     }
   })
 
@@ -75,7 +74,7 @@ function List(props = {}) {
     hotkey: new HotKey({ key: keys.ARROW_DOWN }),
     onPress: function () {
       const newSelected = selected === repos.length - 1 ? 0 : selected + 1
-      grow.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
+      lyse.update(App({ selected: newSelected, scrollOffset: newScrollOffset }))
     }
   })
 
@@ -182,21 +181,21 @@ function App(props = {}) {
   })
 }
 
-const grow = new Grow({
-  renderer: new GrowRendererTUI(),
+const lyse = new Lyse({
+  renderer: new LyseRendererTUI(),
   child: App()
 })
 
-grow.render()
+lyse.render()
 
 // {
-//   const grow = new Grow({
-//     renderer: new GrowRendererHTML(),
+//   const lyse = new Lyse({
+//     renderer: new LyseRendererHTML(),
 //     child: ui
 //   })
 
 //   ui.setAttribute('width', 720)
 //   ui.setAttribute('height', 480)
 
-//   console.log(grow.render())
+//   console.log(lyse.render())
 // }
