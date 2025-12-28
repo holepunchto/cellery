@@ -81,12 +81,11 @@ function List(props = {}) {
     }
   })
 
-  // Create the scrollable component
-  // Use calc: parent height minus 1 row for footer
-  const scrollable = new Scrollable({
+  // Create container with all children and their pressables
+  const listContainer = new Container({
     width: '100%',
-    height: 'calc(100% - 1)', // Reserve 1 row for footer
-    scrollOffset: newScrollOffset,
+    height: '100%', // Use full height available from Scrollable
+    alignment: Alignment.Center,
     children: children.map(
       (child, i) =>
         new Pressable({
@@ -97,6 +96,14 @@ function List(props = {}) {
           child
         })
     )
+  })
+
+  // Wrap container in scrollable
+  const scrollable = new Scrollable({
+    width: '100%',
+    height: 'calc(100% - 1)', // Reserve 1 row for footer
+    scrollOffset: newScrollOffset,
+    child: listContainer
   })
 
   // Store ref for next render
