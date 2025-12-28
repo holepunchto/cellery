@@ -1,1 +1,1 @@
-declare module '@holepunchto/lyse'
+declare module 'lyse'
