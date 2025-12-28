@@ -8,7 +8,7 @@ Core philosophy: cells are stateless and minimal, renderers handle display, appl
 
 ## Why?
 
-GUI, TUI, mobile, browser - all have unique needs. Rather than trying to solve all of these, `Lyse` lets you build functional components, similar to Flutter. Renderes can then choose to implement as much or as little as neede for their use case.
+GUI, TUI, mobile, browser - all have unique needs. Rather than trying to solve all of these, `Lyse` lets you build functional components, similar to Flutter. Renderers can then choose to implement as much or as little as needed for their use case.
 
 Want to render to eInk? Native components rather than React Native? TUI? Implement the `Cells` as you need for your use case while targetting a consistent UX across devices.
 
