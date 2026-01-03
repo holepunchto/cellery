@@ -2,6 +2,7 @@ const { EdgeInsets, Color, Lyse, BoxDecoration, Border, Alignment, HotKey, keys 
 const { Container, Text, Center, Pressable, Scrollable } = require('lyse/components')
 // const { LyseRendererHTML } = require('./lib/html-renderer')
 const { LyseRendererTUI } = require('lyse/renderers')
+const fs = require('fs')
 
 const repos = [
   'my-first-repo',
@@ -88,7 +89,7 @@ function List(props = {}) {
         new Pressable({
           hotkey: i === selected ? new HotKey({ key: keys.ENTER }) : null,
           onPress: () => {
-            console.log('Selected:', repos[i])
+            lyse.update(App({ selected, scrollOffset: 0, selectedRepo: repos[selected] }))
           },
           child
         })
@@ -120,8 +121,59 @@ function List(props = {}) {
   })
 }
 
+const fileContent = fs.readFileSync('./example.js', 'utf8')
+const lines = fileContent.split('\n')
+
 function App(props = {}) {
-  const { selected = -1, scrollOffset = 0 } = props
+  const { selected = -1, scrollOffset = 0, selectedRepo } = props
+
+  const Repos = () => [
+    new Container({
+      width: '100%',
+      height: 3,
+      decoration: new BoxDecoration({
+        border: Border.all({
+          color: Color.from('#bade5b')
+        })
+      }),
+      children: [
+        new Center({
+          width: '100%',
+          height: 3,
+          child: new Text({
+            value: 'Pear Git',
+            color: Color.from('#fff')
+          })
+        })
+      ]
+    }),
+    new Text({
+      value: 'Use ↑/↓ to navigate the scrollable list',
+      color: Color.from({ red: 200, green: 200, blue: 200 })
+    }),
+    List({
+      selected,
+      scrollOffset,
+      children: repos.map(
+        (name, i) =>
+          new Container({
+            width: '50%',
+            height: 3,
+            decoration: new BoxDecoration({
+              border: Border.all({
+                color: selected === i ? Color.from('#fa0') : Color.from('#bade5b')
+              })
+            }),
+            children: [
+              new Text({
+                value: name,
+                color: Color.from('#fff')
+              })
+            ]
+          })
+      )
+    })
+  ]
 
   return new Container({
     width: '100%',
@@ -131,53 +183,61 @@ function App(props = {}) {
     decoration: new BoxDecoration({
       border: Border.all()
     }),
-    children: [
-      new Container({
-        width: '100%',
-        height: 3,
-        decoration: new BoxDecoration({
-          border: Border.all({
-            color: Color.from('#bade5b')
-          })
-        }),
-        children: [
-          new Center({
+    children: selectedRepo
+      ? [
+          new Pressable({
+            hotkey: new HotKey({ key: keys.ARROW_UP }),
+            onPress: function () {
+              const newScrollOffset = scrollOffset > 0 ? scrollOffset - 1 : scrollOffset
+              lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
+            }
+          }),
+
+          new Pressable({
+            hotkey: new HotKey({ key: keys.ARROW_DOWN }),
+            onPress: function () {
+              const newScrollOffset = scrollOffset < lines.length ? scrollOffset + 1 : scrollOffset
+              lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
+            }
+          }),
+          new Container({
             width: '100%',
             height: 3,
-            child: new Text({
-              value: 'Pear Git',
-              color: Color.from('#fff')
+            decoration: new BoxDecoration({
+              border: Border.all({
+                color: Color.from('#bade5b')
+              })
+            }),
+            children: [
+              new Center({
+                width: '100%',
+                height: 3,
+                child: new Text({
+                  value: 'Pear Git - ' + repos[selected],
+                  color: Color.from('#fff')
+                })
+              })
+            ]
+          }),
+
+          new Scrollable({
+            width: '100%',
+            height: 'calc(100% - 3)',
+            scrollOffset,
+            child: new Container({
+              width: '100%',
+              height: '100%',
+              children: lines.map(
+                (line) =>
+                  new Text({
+                    value: line,
+                    width: '100%'
+                  })
+              )
             })
           })
         ]
-      }),
-      new Text({
-        value: 'Use ↑/↓ to navigate the scrollable list',
-        color: Color.from({ red: 200, green: 200, blue: 200 })
-      }),
-      List({
-        selected,
-        scrollOffset,
-        children: repos.map(
-          (name, i) =>
-            new Container({
-              width: '50%',
-              height: 3,
-              decoration: new BoxDecoration({
-                border: Border.all({
-                  color: selected === i ? Color.from('#fa0') : Color.from('#bade5b')
-                })
-              }),
-              children: [
-                new Text({
-                  value: name,
-                  color: Color.from('#fff')
-                })
-              ]
-            })
-        )
-      })
-    ]
+      : Repos()
   })
 }
 

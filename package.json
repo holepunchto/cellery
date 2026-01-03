@@ -15,6 +15,10 @@
     "process": {
       "bare": "bare-process",
       "default": "process"
+    },
+    "fs": {
+      "bare": "bare-fs",
+      "default": "fs"
     }
   },
   "files": [
@@ -23,6 +27,7 @@
     "index.d.ts"
   ],
   "devDependencies": {
+    "bare-fs": "^4.5.2",
     "brittle": "^3.19.0",
     "lunte": "^1.2.0",
     "prettier": "^3.6.2",
