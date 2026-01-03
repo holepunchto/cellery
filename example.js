@@ -185,21 +185,6 @@ function App(props = {}) {
     }),
     children: selectedRepo
       ? [
-          new Pressable({
-            hotkey: new HotKey({ key: keys.ARROW_UP }),
-            onPress: function () {
-              const newScrollOffset = scrollOffset > 0 ? scrollOffset - 1 : scrollOffset
-              lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
-            }
-          }),
-
-          new Pressable({
-            hotkey: new HotKey({ key: keys.ARROW_DOWN }),
-            onPress: function () {
-              const newScrollOffset = scrollOffset < lines.length ? scrollOffset + 1 : scrollOffset
-              lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
-            }
-          }),
           new Container({
             width: '100%',
             height: 3,
@@ -220,21 +205,48 @@ function App(props = {}) {
             ]
           }),
 
-          new Scrollable({
+          new Container({
             width: '100%',
             height: 'calc(100% - 3)',
-            scrollOffset,
-            child: new Container({
-              width: '100%',
-              height: '100%',
-              children: lines.map(
-                (line) =>
-                  new Text({
-                    value: line,
-                    width: '100%'
-                  })
-              )
-            })
+            decoration: new BoxDecoration({
+              border: Border.all({
+                color: Color.from('#bade5b')
+              })
+            }),
+            children: [
+              new Pressable({
+                hotkey: new HotKey({ key: keys.ARROW_UP }),
+                onPress: function () {
+                  const newScrollOffset = scrollOffset > 0 ? scrollOffset - 1 : scrollOffset
+                  lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
+                }
+              }),
+
+              new Pressable({
+                hotkey: new HotKey({ key: keys.ARROW_DOWN }),
+                onPress: function () {
+                  const newScrollOffset =
+                    scrollOffset < lines.length ? scrollOffset + 1 : scrollOffset
+                  lyse.update(App({ scrollOffset: newScrollOffset, selected, selectedRepo }))
+                }
+              }),
+              new Scrollable({
+                width: '100%',
+                height: '100%',
+                scrollOffset,
+                child: new Container({
+                  width: '100%',
+                  height: '100%',
+                  children: lines.map(
+                    (line) =>
+                      new Text({
+                        value: line,
+                        width: '100%'
+                      })
+                  )
+                })
+              })
+            ]
           })
         ]
       : Repos()
