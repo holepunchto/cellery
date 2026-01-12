@@ -1,10 +1,10 @@
-const { EdgeInsets, Color, Lyse, BoxDecoration, Border, Alignment, HotKey, keys } = require('.')
-const { Container, Text, Center, Pressable, Scrollable } = require('lyse/components')
-const { LyseRendererTUI } = require('lyse/renderers')
+const { EdgeInsets, Color, Cellery, BoxDecoration, Border, Alignment, HotKey, keys } = require('.')
+const { Container, Text, Center, Pressable, Scrollable } = require('cellery/components')
+const { CelleryRendererTUI } = require('cellery/renderers')
 const fs = require('fs')
 const repos = [
   'my-first-repo',
-  'lyse',
+  'cellery',
   'git-remote-pear-transport',
   'pear-desktop',
   'pear-runtime',
@@ -68,7 +68,7 @@ const listUpControl = new Pressable({
   onPress: function () {
     selected = selected === 0 ? repos.length - 1 : selected - 1
     updateListView()
-    lyse.render()
+    cellery.render()
   }
 })
 
@@ -77,7 +77,7 @@ const listDownControl = new Pressable({
   onPress: function () {
     selected = selected === repos.length - 1 ? 0 : selected + 1
     updateListView()
-    lyse.render()
+    cellery.render()
   }
 })
 
@@ -86,7 +86,7 @@ const listEnterControl = new Pressable({
   onPress: function () {
     currentView = 'file'
     fileScrollable.scrollOffset = 0
-    lyse.update(App())
+    cellery.update(App())
   }
 })
 
@@ -96,7 +96,7 @@ const fileUpControl = new Pressable({
   onPress: function () {
     if (fileScrollable.scrollOffset > 0) {
       fileScrollable.scrollOffset--
-      lyse.render()
+      cellery.render()
     }
   }
 })
@@ -107,7 +107,7 @@ const fileDownControl = new Pressable({
     const viewport = fileScrollable._renderedViewport
     if (viewport && fileScrollable.scrollOffset + viewport.itemCount < lines.length) {
       fileScrollable.scrollOffset++
-      lyse.render()
+      cellery.render()
     }
   }
 })
@@ -116,7 +116,7 @@ const fileBackControl = new Pressable({
   hotkey: new HotKey({ key: keys.ESC }),
   onPress: function () {
     currentView = 'list'
-    lyse.update(App())
+    cellery.update(App())
   }
 })
 
@@ -250,9 +250,9 @@ function App() {
     ]
   })
 }
-const lyse = new Lyse({
-  renderer: new LyseRendererTUI(),
+const cellery = new Cellery({
+  renderer: new CelleryRendererTUI(),
   child: App()
 })
 
-lyse.render()
+cellery.render()

@@ -1,1 +1,1 @@
-declare module 'lyse'
+declare module 'cellery'

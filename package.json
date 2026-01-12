@@ -1,7 +1,7 @@
 {
-  "name": "lyse",
+  "name": "cellery",
   "version": "0.0.2",
-  "description": "lyse",
+  "description": "cellery",
   "exports": {
     "./package": "./package.json",
     "./renderers": "./lib/renderers/index.js",
@@ -44,14 +44,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/holepunchto/lyse.git"
+    "url": "https://github.com/holepunchto/cellery.git"
   },
   "author": "Holepunch Inc",
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/holepunchto/lyse/issues"
+    "url": "https://github.com/holepunchto/cellery/issues"
   },
-  "homepage": "https://github.com/holepunchto/lyse",
+  "homepage": "https://github.com/holepunchto/cellery",
   "dependencies": {
     "bare-ansi-escapes": "^2.2.3",
     "bare-events": "^2.8.2",
