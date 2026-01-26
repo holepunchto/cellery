@@ -1,55 +1,57 @@
 <!doctype html>
 <html>
   <head>
-    <meta charset="UTF-8" />
+    <title>Streaming UI</title>
     <style>
       body {
-        margin: 0;
-        padding: 20px;
-        font-family: monospace;
-        background: #f0f0f0;
+        font-family: system-ui, sans-serif;
+        padding: 2rem;
+      }
+      .container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      span {
+        font-size: 1.2rem;
       }
     </style>
   </head>
   <body>
-    <div
-      style="
-        width: 720px;
-        height: 480px;
-        margin: 2px 2px 2px 2px;
-        padding: 0px 0px 0px 0px;
-        box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #000000;
-      "
-    >
-      <span style="color: rgba(255, 0, 0, 1)">Hello world!</span
-      ><span style="color: rgba(0, 0, 255, 1)">Hello again!</span>
-      <div
-        style="
-          width: 119px;
-          height: 10px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        "
-      >
-        <div
-          style="
-            width: 500px;
-            height: 30px;
-            margin: 0px 0px 0px 0px;
-            padding: 0px 0px 0px 0px;
-            box-sizing: border-box;
-            display: flex;
-            flex-direction: column;
-            border: 1px solid rgba(255, 0, 0, 1);
-          "
-        >
-          <span style="color: rgba(0, 255, 0, 1)">Inner</span>
-        </div>
-      </div>
-    </div>
+    <div id="app"></div>
+
+    <script type="module">
+      import { Container, Button, Text, Backend, HTMLAdapter } from './ui.js'
+
+      // Build the UI tree
+      const container = new Container({ id: 'main' })
+      const button = container.addChild(new Button({ id: 'btn1', label: 'Click me' }))
+      const text = container.addChild(new Text({ id: 'txt1', content: 'Count: 0' }))
+
+      // Backend maintains click count
+      const backend = new Backend()
+      backend.store.clickCount = 0
+
+      backend.when({ source: 'btn1', event: 'click' }, function () {
+        this.store.clickCount++
+        this.push({
+          target: 'txt1',
+          payload: { content: 'Count: ' + this.store.clickCount }
+        })
+      })
+
+      // Adapter renders to DOM and captures events
+      const adapter = new HTMLAdapter(document.getElementById('app'), container)
+
+      // Wire it all up:
+      // adapter events → container → backend
+      // backend updates → container → adapter re-renders
+      adapter.pipe(container).pipe(backend).pipe(container).pipe(adapter)
+    </script>
   </body>
 </html>

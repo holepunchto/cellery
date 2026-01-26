@@ -1,0 +1,78 @@
+<!doctype html>
+<html>
+  <head>
+    <style>
+      body > h1:nth-of-type(1) {
+        cursor: pointer;
+      }
+
+      body {
+        --title-bar-height: 42px;
+        padding-top: var(--title-bar-height);
+        color: lime;
+        font-family: sans-serif;
+      }
+
+      #bar {
+        background: rgba(55, 60, 72, 0.6);
+        backdrop-filter: blur(64px);
+        -webkit-app-region: drag;
+        height: var(--title-bar-height);
+        padding: 0;
+        border-top-left-radius: 8px;
+        border-top-right-radius: 8px;
+        color: #fff;
+        white-space: nowrap;
+        box-sizing: border-box;
+        position: fixed;
+        z-index: 2;
+        width: 100%;
+        left: 0;
+        top: 0;
+      }
+
+      pear-ctrl[data-platform='darwin'] {
+        margin-top: 18px;
+        margin-left: 12px;
+      }
+
+      .container {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+      }
+      button {
+        padding: 0.5rem 1rem;
+        font-size: 1rem;
+        cursor: pointer;
+      }
+      span {
+        font-size: 1.2rem;
+      }
+
+      #update,
+      #action {
+        display: none;
+      }
+      #action {
+        font-size: 1.25rem;
+        background: #405b40;
+        color: #ddd;
+        border: 2px solid #ddd;
+        padding: 0.2em 0.3em;
+        cursor: pointer;
+      }
+    </style>
+    <script type="module" src="./app.js"></script>
+  </head>
+  <body>
+    <div id="bar"><pear-ctrl></pear-ctrl></div>
+    <h1>demo</h1>
+    <div id="update">
+      <span style="font-size: 1.4rem">Update Available:</span>
+      <button id="action"></button>
+    </div>
+
+    <div id="app"></div>
+  </body>
+</html>
