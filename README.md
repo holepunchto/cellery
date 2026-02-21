@@ -50,7 +50,7 @@ Rendering is handled by `Adapters`. Currently these are simply called by `Celler
 We're trying to keep Cells simple. A super basic set of low level components to see how much can be achieved with little.
 
 | Cell        | Description                              |
-|-------------|------------------------------------------|
+| ----------- | ---------------------------------------- |
 | `Cell`      | Base class for all components            |
 | `MultiCell` | Composes multiple cells into one render  |
 | `Container` | Layout wrapper with scroll and flex opts |
