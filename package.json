@@ -1,38 +1,22 @@
 {
   "name": "cellery",
-  "version": "0.0.2",
+  "version": "1.0.0",
   "description": "cellery",
   "exports": {
     "./package": "./package.json",
-    "./renderers": "./lib/renderers/index.js",
-    "./components": "./lib/components/index.js",
     ".": {
       "types": "./index.d.ts",
-      "default": "./lib/index.js"
+      "default": "./index.js"
     }
   },
-  "type": "module",
-  "imports": {
-    "process": {
-      "bare": "bare-process",
-      "default": "process"
-    },
-    "fs": {
-      "bare": "bare-fs",
-      "default": "fs"
-    },
-    "events": {
-      "bare": "bare-events",
-      "default": "events"
-    }
-  },
+  "type": "commonjs",
   "files": [
     "package.json",
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "lib"
   ],
   "devDependencies": {
-    "bare-fs": "^4.5.2",
     "brittle": "^3.19.0",
     "lunte": "^1.2.0",
     "prettier": "^3.6.2",
@@ -54,10 +38,6 @@
   },
   "homepage": "https://github.com/holepunchto/cellery",
   "dependencies": {
-    "bare-ansi-escapes": "^2.2.3",
-    "bare-events": "^2.8.2",
-    "bare-process": "^4.2.2",
-    "graceful-goodbye": "^1.3.3",
-    "teex": "^1.0.1"
+    "iambus": "^2.0.6"
   }
 }
