@@ -15,6 +15,7 @@ test('styled cells', async (t) => {
   })
 
   t.ok(btn instanceof Text)
+  t.is(btn.parent, 'Text')
   t.is(btn.value, 'Hello!')
   t.is(btn.color.toString(), 'Color(red:20,green:71,blue:230,alpha:1)')
   t.is(
