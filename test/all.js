@@ -8,6 +8,7 @@ async function runTests() {
   test.pause()
 
   await import('./styled.js')
+  await import('./template.js')
 
   test.resume()
 }
