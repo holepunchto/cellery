@@ -124,9 +124,9 @@ test('styles - add scope', function (t) {
 
   // html style converts cells to classes
   t.is(el.style.findPropertyOfCell('Text', 'color'), 'red')
-  el.style.addScope('[data-cellery-cell="Text"]', '#parent')
-  t.is(el.style.toCSS(), '#parent [data-cellery-cell="Text"]{color:red}')
-  t.is(el.style.findProperty('#parent [data-cellery-cell="Text"]', 'color'), 'red')
+  el.style.addScope('[data-cellery-cell="Text"]', 'parent')
+  t.is(el.style.toCSS(), '[data-cellery-cell="Text"]#parent{color:red}')
+  t.is(el.style.findProperty('[data-cellery-cell="Text"]#parent', 'color'), 'red')
 })
 
 test('mixed interpolation in text content', function (t) {
