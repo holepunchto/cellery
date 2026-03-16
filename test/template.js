@@ -102,6 +102,57 @@ test('styles', function (t) {
   console.log(el.style.content.children.first)
 
   // html style converts cells to classes
-  t.is(el.style.findProperty('.text', 'color'), 'red')
-  t.is(el.style.toCSS(), '.text{color:red}')
+  t.is(el.style.findProperty('[data-cellery-cell="Text"]', 'color'), 'red')
+  t.is(el.style.toCSS(), '[data-cellery-cell="Text"]{color:red}')
+})
+
+test('styles - add scope', function (t) {
+  const msg = 'hello world'
+  const el = cellery`<Container>
+    <Style.HTML>
+      Text {
+      color: red;
+      }
+   </Style.HTML>
+    <Text>${msg}</Text>
+    </Container>`
+
+  const text = el.children[0]
+  t.is(text.children[0], 'hello world')
+  t.is(text.value, 'hello world')
+  console.log(el.style.content.children.first)
+
+  // html style converts cells to classes
+  t.is(el.style.findPropertyOfCell('Text', 'color'), 'red')
+  el.style.addScope('[data-cellery-cell="Text"]', '#parent')
+  t.is(el.style.toCSS(), '#parent [data-cellery-cell="Text"]{color:red}')
+  t.is(el.style.findProperty('#parent [data-cellery-cell="Text"]', 'color'), 'red')
+})
+
+test('mixed interpolation in text content', function (t) {
+  const name = 'myrepo'
+  const el = cellery`<Text>Container#${name} { color: red; }</Text>`
+  t.is(el.value, 'Container#myrepo { color: red; }')
+})
+
+test('multiple interpolations in text content', function (t) {
+  const a = 'foo'
+  const b = 'bar'
+  const el = cellery`<Text>#${a} { } .${b}:hover { }</Text>`
+  t.is(el.value, '#foo { } .bar:hover { }')
+})
+
+test('dotted tag names', function (t) {
+  class StyleHTML extends Cell {}
+  register({ 'Style.HTML': StyleHTML })
+  const name = 'myrepo'
+  const el = cellery`<Style.HTML>Container#${name} { color: red; }</Style.HTML>`
+  t.ok(el instanceof StyleHTML)
+  t.is(el.children[0], 'Container#myrepo { color: red; }')
+})
+
+test('mixed interpolation in quoted attributes', function (t) {
+  const name = 'myrepo'
+  const el = cellery`<Container id="item-${name}" />`
+  t.is(el.id, 'item-myrepo')
 })
