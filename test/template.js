@@ -19,6 +19,7 @@ test('text children become strings', function (t) {
   const text = el.children[0]
   t.is(text.children.length, 1)
   t.is(text.children[0], 'hello')
+  t.is(text.value, 'hello')
 })
 
 test('attributes', function (t) {
@@ -43,6 +44,7 @@ test('interpolated text content', function (t) {
   const msg = 'hello world'
   const el = cellery`<Text>${msg}</Text>`
   t.is(el.children[0], 'hello world')
+  t.is(el.value, 'hello world')
 })
 
 test('deeply nested tree', function (t) {
@@ -81,4 +83,25 @@ test('unknown tag throws', function (t) {
 
 test('empty template throws', function (t) {
   t.exception(() => cellery``)
+})
+
+test('styles', function (t) {
+  const msg = 'hello world'
+  const el = cellery`<Container>
+    <Style.HTML>
+      Text {
+      color: red;
+      }
+   </Style.HTML>
+    <Text>${msg}</Text>
+    </Container>`
+
+  const text = el.children[0]
+  t.is(text.children[0], 'hello world')
+  t.is(text.value, 'hello world')
+  console.log(el.style.content.children.first)
+
+  // html style converts cells to classes
+  t.is(el.style.findProperty('.text', 'color'), 'red')
+  t.is(el.style.toCSS(), '.text{color:red}')
 })

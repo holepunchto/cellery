@@ -38,6 +38,7 @@
   },
   "homepage": "https://github.com/holepunchto/cellery",
   "dependencies": {
+    "css-tree": "^3.2.1",
     "iambus": "^2.0.6"
   }
 }
