@@ -1,21 +1,22 @@
 const test = require('brittle')
-const { cellery, register, App, Text, Paragraph, Container, Cell } = require('../')
+const { cellery, register, Fragment, Text, Container, Cell } = require('../')
 
 test('basic element', function (t) {
-  const el = cellery`<App />`
-  t.ok(el instanceof App)
-  t.is(el.id, 'app')
+  const el = cellery`<Text id='test'/>`
+  t.ok(el instanceof Text)
+  t.is(el.id, 'test')
 })
 
 test('nested children', function (t) {
-  const el = cellery`<App><Text>hello</Text><Paragraph>world</Paragraph></App>`
+  const el = cellery`<><Text>hello</Text><Text paragraph>world</Text></>`
   t.is(el.children.length, 2)
   t.ok(el.children[0] instanceof Text)
-  t.ok(el.children[1] instanceof Paragraph)
+  t.ok(el.children[1] instanceof Text)
+  t.is(el.children[1].paragraph, true)
 })
 
 test('text children become strings', function (t) {
-  const el = cellery`<App><Text>hello</Text></App>`
+  const el = cellery`<><Text>hello</Text></>`
   const text = el.children[0]
   t.is(text.children.length, 1)
   t.is(text.children[0], 'hello')
@@ -35,9 +36,9 @@ test('numeric attributes', function (t) {
 })
 
 test('interpolated attribute values', function (t) {
-  const handler = () => {}
-  const el = cellery`<Text onclick=${handler}>click me</Text>`
-  t.is(el.onclick, handler)
+  const heading = 1
+  const el = cellery`<Text heading=${heading}>click me</Text>`
+  t.alike(el.heading, 1)
 })
 
 test('interpolated text content', function (t) {
@@ -48,8 +49,8 @@ test('interpolated text content', function (t) {
 })
 
 test('deeply nested tree', function (t) {
-  const el = cellery`<App><Container><Text>deep</Text></Container></App>`
-  t.ok(el instanceof App)
+  const el = cellery`<><Container><Text>deep</Text></Container></>`
+  t.ok(el instanceof Fragment)
   const container = el.children[0]
   t.ok(container instanceof Container)
   const text = container.children[0]
@@ -88,11 +89,11 @@ test('empty template throws', function (t) {
 test('styles', function (t) {
   const msg = 'hello world'
   const el = cellery`<Container>
-    <Style.HTML>
+    <Style>
       Text {
       color: red;
       }
-   </Style.HTML>
+   </Style>
     <Text>${msg}</Text>
     </Container>`
 
@@ -109,11 +110,11 @@ test('styles', function (t) {
 test('styles - add scope', function (t) {
   const msg = 'hello world'
   const el = cellery`<Container>
-    <Style.HTML>
+    <Style>
       Text {
       color: red;
       }
-   </Style.HTML>
+   </Style>
     <Text>${msg}</Text>
     </Container>`
 
@@ -155,4 +156,31 @@ test('mixed interpolation in quoted attributes', function (t) {
   const name = 'myrepo'
   const el = cellery`<Container id="item-${name}" />`
   t.is(el.id, 'item-myrepo')
+})
+
+test('compat', function (t) {
+  const el = cellery`<><span>hello</span><p>world</p></>`
+  t.is(el.children.length, 2)
+  t.ok(el.children[0] instanceof Text)
+  t.ok(el.children[1] instanceof Text)
+  t.is(el.children[1].paragraph, true)
+})
+
+test('compat - style', function (t) {
+  const el = cellery`<>
+    <style>
+     span {
+       color:red;
+     }
+    </style>
+    <div>
+      <span>hello</span>
+    </div>
+    <p>world</p>
+    </>`
+  t.is(el.children.length, 2)
+  t.ok(el.children[0] instanceof Container)
+  t.ok(el.children[0].children[0] instanceof Text)
+  t.ok(el.children[1] instanceof Text)
+  t.is(el.children[1].paragraph, true)
 })
