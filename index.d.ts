@@ -121,7 +121,6 @@ declare module 'cellery' {
     _render(): this
     render(opts?: Record<string, any>): void
     destroy(): void
-    register(cellery: Cellery): void // lunte-disable-line
   }
 
   export interface ContainerOptions extends CellOptions {
