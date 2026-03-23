@@ -201,7 +201,7 @@ test('compat - render stream', function (t) {
   let i = 0
 
   c.sub({}).on('data', (data) => {
-    const ch = el.children[0].children[0].children
+    const ch = el.children[0].children
 
     t.is(data.event, 'render')
     t.ok(ch[i].value, expected[i])
@@ -209,6 +209,6 @@ test('compat - render stream', function (t) {
     i++
   })
 
-  stream.push(cellery`<><span>hello</span></>`)
-  stream.push(cellery`<><span>hello</span><span>world</span></>`)
+  stream.push(cellery`<span>hello</span>`)
+  stream.push(cellery`<span>world</span>`)
 })
