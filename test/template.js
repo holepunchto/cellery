@@ -90,8 +90,8 @@ test('styles', function (t) {
   const msg = 'hello world'
   const el = cellery`<Container>
     <Style>
-      Text {
-      color: red;
+      [data-cellery-cell="Text"] {
+        color: red;
       }
    </Style>
     <Text>${msg}</Text>
@@ -100,7 +100,6 @@ test('styles', function (t) {
   const text = el.children[0]
   t.is(text.children[0], 'hello world')
   t.is(text.value, 'hello world')
-  console.log(el.style.content.children.first)
 
   // html style converts cells to classes
   t.is(el.style.findProperty('[data-cellery-cell="Text"]', 'color'), 'red')
@@ -111,8 +110,8 @@ test('styles - add scope', function (t) {
   const msg = 'hello world'
   const el = cellery`<Container>
     <Style>
-      Text {
-      color: red;
+      [data-cellery-cell="Text"] {
+        color: red;
       }
    </Style>
     <Text>${msg}</Text>
@@ -121,13 +120,12 @@ test('styles - add scope', function (t) {
   const text = el.children[0]
   t.is(text.children[0], 'hello world')
   t.is(text.value, 'hello world')
-  console.log(el.style.content.children.first)
 
   // html style converts cells to classes
   t.is(el.style.findPropertyOfCell('Text', 'color'), 'red')
-  el.style.addScope('[data-cellery-cell="Text"]', 'parent')
-  t.is(el.style.toCSS(), '[data-cellery-cell="Text"]#parent{color:red}')
-  t.is(el.style.findProperty('[data-cellery-cell="Text"]#parent', 'color'), 'red')
+  el.style.addScope('parent')
+  t.is(el.style.toCSS(), '#parent [data-cellery-cell="Text"]{color:red}')
+  t.is(el.style.findProperty('#parent [data-cellery-cell="Text"]', 'color'), 'red')
 })
 
 test('mixed interpolation in text content', function (t) {
