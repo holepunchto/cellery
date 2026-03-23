@@ -1,5 +1,7 @@
 const test = require('brittle')
 const { cellery, register, Fragment, Text, Container, Cell } = require('../')
+const { Readable } = require('streamx')
+const { Cellery } = require('cellery')
 
 test('basic element', function (t) {
   const el = cellery`<Text id='test'/>`
@@ -181,4 +183,32 @@ test('compat - style', function (t) {
   t.ok(el.children[0].children[0] instanceof Text)
   t.ok(el.children[1] instanceof Text)
   t.is(el.children[1].paragraph, true)
+})
+
+test('compat - render stream', function (t) {
+  const c = new Cellery()
+  t.plan(4)
+
+  const stream = new Readable()
+
+  const el = cellery`<>
+    <div>
+      ${stream}
+    </div>
+    </>`
+
+  const expected = ['hello', 'world']
+  let i = 0
+
+  c.sub({}).on('data', (data) => {
+    const ch = el.children[0].children[0].children
+
+    t.is(data.event, 'render')
+    t.ok(ch[i].value, expected[i])
+
+    i++
+  })
+
+  stream.push(cellery`<><span>hello</span></>`)
+  stream.push(cellery`<><span>hello</span><span>world</span></>`)
 })
