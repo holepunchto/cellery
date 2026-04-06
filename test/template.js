@@ -130,6 +130,34 @@ test('styles - add scope', function (t) {
   t.is(el.style.findProperty('#parent [data-cellery-cell="Text"]', 'color'), 'red')
 })
 
+test('styles - animations not scoped', function (t) {
+  const msg = 'hello world'
+  const el = cellery`<Container>
+    <Style>
+      [data-cellery-cell="Text"] {
+        animation: spin 0.8s linear infinite;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+   </Style>
+    <Text>${msg}</Text>
+    </Container>`
+
+  const text = el.children[0]
+  t.is(text.children[0], 'hello world')
+  t.is(text.value, 'hello world')
+
+  el.style.addScope('parent')
+  t.is(
+    el.style.toCSS(),
+    '#parent [data-cellery-cell="Text"]{animation:spin 0.8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}'
+  )
+})
+
 test('mixed interpolation in text content', function (t) {
   const name = 'myrepo'
   const el = cellery`<Text>Container#${name} { color: red; }</Text>`
